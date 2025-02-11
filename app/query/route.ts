@@ -14,13 +14,15 @@ async function listInvoices() {
 }
 
 export async function GET() {
-  return Response.json({
-    message:
-      "Uncomment this file and remove this line. You can delete this file when you are finished.",
-  });
-  // try {
-  // 	return Response.json(await listInvoices());
-  // } catch (error) {
-  // 	return Response.json({ error }, { status: 500 });
-  // }
+  try {
+    return Response.json(await listInvoices());
+  } catch (error) {
+    console.error("Database query error:", error);
+
+    // 👇 تبدیل `error` به `Error` برای حل خطای TypeScript
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+
+    return Response.json({ error: errorMessage }, { status: 500 });
+  }
 }
